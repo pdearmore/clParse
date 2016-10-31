@@ -9,8 +9,8 @@ namespace clParse.CommandLine.Interfaces
     public interface IArgument
     {
         string Name { get; set; }
-        string Help { get; set; }
-        string Example { get; set; }
+        string HelpDetail { get; set; }
+        string HelpExample { get; set; }
         string Summary { get; set; }
 
         void ProcessArgument(IEnumerable<IArgument> args);
