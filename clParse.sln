@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "clParse.Console", "clParse.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "clParse", "clParse\clParse.csproj", "{ED3440B7-D3FD-41B7-8C90-DFEB51CEA9EA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{803FA56F-7916-47A6-8402-A6D7A6BE2E4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "clParse.Test", "clParse.Test\clParse.Test.csproj", "{CCF7DB99-FECF-424C-897F-2608BB49D1E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,8 +25,15 @@ Global
 		{ED3440B7-D3FD-41B7-8C90-DFEB51CEA9EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED3440B7-D3FD-41B7-8C90-DFEB51CEA9EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED3440B7-D3FD-41B7-8C90-DFEB51CEA9EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCF7DB99-FECF-424C-897F-2608BB49D1E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCF7DB99-FECF-424C-897F-2608BB49D1E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCF7DB99-FECF-424C-897F-2608BB49D1E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCF7DB99-FECF-424C-897F-2608BB49D1E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CCF7DB99-FECF-424C-897F-2608BB49D1E1} = {803FA56F-7916-47A6-8402-A6D7A6BE2E4B}
 	EndGlobalSection
 EndGlobal
