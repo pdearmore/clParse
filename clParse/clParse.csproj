@@ -40,7 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandLine\Argument.cs" />
     <Compile Include="CommandLine\CommandArgument.cs" />
+    <Compile Include="CommandLine\Enums\CommandStatus.cs" />
     <Compile Include="CommandLine\SwitchArgument.cs" />
     <Compile Include="CommandLine\Interfaces\IArgument.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

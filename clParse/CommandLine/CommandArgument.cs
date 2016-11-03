@@ -3,18 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using clParse.CommandLine.Enums;
 using clParse.CommandLine.Interfaces;
 
 
 namespace clParse.CommandLine
 {
-    public abstract class CommandArgument : IArgument
+    public abstract class CommandArgument : Argument
     {
-        public string Name { get; set; }
-        public string HelpDetail { get; set; }
-        public string HelpExample { get; set; }
-        public string Summary { get; set; }
+        public CommandStatus Status { get; set; }
 
-        public abstract void ProcessArgument(IEnumerable<IArgument> args);
+        public abstract void Command(IEnumerable<IArgument> args);
+
+        public CommandArgument()
+        {
+            Status = CommandStatus.NotRun;
+        }
+
+        public void ProcessCommand(IEnumerable<IArgument> args)
+        {
+            Status = CommandStatus.Executing;
+
+            Command(args);
+
+            if (Status == CommandStatus.Executing)
+                Status = CommandStatus.Successful;
+        }
     }
 }

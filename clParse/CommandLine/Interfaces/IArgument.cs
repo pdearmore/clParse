@@ -12,7 +12,5 @@ namespace clParse.CommandLine.Interfaces
         string HelpDetail { get; set; }
         string HelpExample { get; set; }
         string Summary { get; set; }
-
-        void ProcessArgument(IEnumerable<IArgument> args);
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using clParse.CommandLine.Enums;
 using clParse.CommandLine.Interfaces;
 
 namespace clParse.CommandLine.Tests
@@ -12,30 +13,38 @@ namespace clParse.CommandLine.Tests
     [TestClass()]
     public class CommandArgumentTests
     {
-        private class TestCommand : CommandArgument
+        private class FailedTestCommand : CommandArgument
         {
-            public bool Success { get; set; }
-
-            public TestCommand()
+            public override void Command(IEnumerable<IArgument> args)
             {
-                Success = false;
+                Status = CommandStatus.Failed;
             }
+        }
 
-            public override void ProcessArgument(IEnumerable<IArgument> args)
+        private class SuccessfulTestCommand : CommandArgument
+        {
+            public override void Command(IEnumerable<IArgument> args)
             {
-                Success = true;
+                // Just some dummy code
+                var x = 1;
             }
         }
 
         [TestMethod()]
-        public void ProcessArgumentTest()
+        public void ProcessArgument_Status()
         {
-            var tc = new TestCommand();
+            FailedTestCommand tc = new FailedTestCommand();
+            SuccessfulTestCommand sc = new SuccessfulTestCommand();
+
             var args = new List<IArgument>() {tc};
 
-            tc.ProcessArgument(args);
+            Assert.AreEqual(CommandStatus.NotRun, tc.Status);
 
-            Assert.AreEqual(true, tc.Success);
+            tc.ProcessCommand(args);
+            sc.ProcessCommand(args);
+
+            Assert.AreEqual(CommandStatus.Failed, tc.Status);
+            Assert.AreEqual(CommandStatus.Successful, sc.Status);
         }
     }
 }
