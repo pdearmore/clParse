@@ -31,20 +31,29 @@ namespace clParse.CommandLine.Tests
         }
 
         [TestMethod()]
-        public void ProcessArgument_Status()
+        public void ProcessArgument_StatusSuccess()
+        {
+            SuccessfulTestCommand sc = new SuccessfulTestCommand();
+            var args = new List<IArgument>() {sc};
+
+            Assert.AreEqual(CommandStatus.NotRun, sc.Status);
+
+            sc.ProcessCommand(args);
+
+            Assert.AreEqual(CommandStatus.Successful, sc.Status);
+        }
+
+        [TestMethod()]
+        public void ProcessArgument_StatusFailed()
         {
             FailedTestCommand tc = new FailedTestCommand();
-            SuccessfulTestCommand sc = new SuccessfulTestCommand();
-
             var args = new List<IArgument>() {tc};
 
             Assert.AreEqual(CommandStatus.NotRun, tc.Status);
 
             tc.ProcessCommand(args);
-            sc.ProcessCommand(args);
 
             Assert.AreEqual(CommandStatus.Failed, tc.Status);
-            Assert.AreEqual(CommandStatus.Successful, sc.Status);
         }
     }
 }
