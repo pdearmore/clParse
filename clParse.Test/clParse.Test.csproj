@@ -51,6 +51,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="CommandLine\CommandArgumentTests.cs" />
+    <Compile Include="CommandLine\ParserTests.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
