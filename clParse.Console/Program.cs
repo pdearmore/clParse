@@ -10,6 +10,7 @@ namespace clParse
     {
         static void Main(string[] args)
         {
+            var blah = args;
         }
     }
 }

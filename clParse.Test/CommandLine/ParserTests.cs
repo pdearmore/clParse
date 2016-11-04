@@ -22,13 +22,14 @@ namespace clParse.CommandLine.Tests
 
 
         [TestMethod()]
-        public void ParseTest()
+        public void ParseSingleCommandTest()
         {
             var hc = new HelpCommand();
             var lst = new List<IArgument>() {hc};
             var parser = new Parser(lst);
+            var testArgs = new string[] {"help"};
 
-            parser.Parse(new string[] {"test"});
+            parser.Parse(testArgs);
 
             // TODO: Write assert for number of args
         }
