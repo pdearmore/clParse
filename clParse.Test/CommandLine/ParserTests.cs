@@ -20,6 +20,11 @@ namespace clParse.CommandLine.Tests
             }
         }
 
+        private class EstimateArgument : NamedArgument
+        {
+
+        }
+
 
         [TestMethod()]
         public void ParseSingleCommand_CI_Test()
@@ -58,6 +63,20 @@ namespace clParse.CommandLine.Tests
             var rtn = parser.Parse(testArgs);
 
             Assert.AreEqual(0, rtn.Count);
+        }
+        [TestMethod()]
+        public void ParseNamedArgumentWithValue_Test()
+        {
+            var na = new NamedArgument();
+            var lst = new List<IArgument>() { na };
+            var parser = new Parser(lst);
+            var testArgs = new string[] { "/estimate:5" };
+
+            var rtn = parser.Parse(testArgs);
+
+            Assert.AreEqual(1, rtn.Count);
+            Assert.AreEqual("Estimate", ((NamedArgument)rtn[0]).Name);
+            Assert.AreEqual("5", ((NamedArgument)rtn[0]).Value);
         }
     }
 }

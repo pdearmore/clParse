@@ -16,10 +16,18 @@ namespace clParse.CommandLine
         /// Delimiter is the character that separates a named argument from its value
         /// </summary>
         public char Delimiter { get; set; }
-        public bool CaseSensitive { get; set; }
 
+        /// <summary>
+        /// Prefix is the character that precedes an argument (not a command)
+        /// </summary>
+        public char Prefix { get; set; }
+        public bool CaseSensitive { get; set; }
+        
         private string _commandSuffix;
 
+        /// <summary>
+        /// CommandSuffix is what to call a class that should be interpreted as a command-style argument
+        /// </summary>
         public string CommandSuffix
         {
             get { return CaseSensitive ? _commandSuffix : _commandSuffix.ToLower() ; }
