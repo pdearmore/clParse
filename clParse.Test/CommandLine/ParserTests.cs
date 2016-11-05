@@ -29,9 +29,9 @@ namespace clParse.CommandLine.Tests
             var parser = new Parser(lst);
             var testArgs = new string[] {"help"};
 
-            parser.Parse(testArgs);
+            var rtn = parser.Parse(testArgs);
 
-            // TODO: Write assert for number of args
+            Assert.AreEqual(1, rtn.Count);
         }
     }
 }

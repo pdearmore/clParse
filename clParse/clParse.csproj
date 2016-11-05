@@ -43,6 +43,8 @@
     <Compile Include="CommandLine\Argument.cs" />
     <Compile Include="CommandLine\CommandArgument.cs" />
     <Compile Include="CommandLine\Enums\CommandStatus.cs" />
+    <Compile Include="CommandLine\Interfaces\IArgumentWithValue.cs" />
+    <Compile Include="CommandLine\NamedArgument.cs" />
     <Compile Include="CommandLine\Parser.cs" />
     <Compile Include="CommandLine\SwitchArgument.cs" />
     <Compile Include="CommandLine\Interfaces\IArgument.cs" />
