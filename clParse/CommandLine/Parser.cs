@@ -16,13 +16,13 @@ namespace clParse.CommandLine
         /// Delimiter is the character that separates a named argument from its value
         /// </summary>
         public char Delimiter { get; set; }
-        public bool CaseInsensitive { get; set; }
+        public bool CaseSensitive { get; set; }
 
         private string _commandSuffix;
 
         public string CommandSuffix
         {
-            get { return CaseInsensitive ? _commandSuffix.ToLower() : _commandSuffix; }
+            get { return CaseSensitive ? _commandSuffix : _commandSuffix.ToLower() ; }
             set { _commandSuffix = value; }
         }
 
@@ -30,7 +30,7 @@ namespace clParse.CommandLine
 
         public string ArgumentSuffix
         {
-            get { return CaseInsensitive ? _argumentSuffix.ToLower() : _argumentSuffix; }
+            get { return CaseSensitive ? _argumentSuffix : _argumentSuffix.ToLower(); }
             set { _argumentSuffix = value; }
         }
 
@@ -42,7 +42,9 @@ namespace clParse.CommandLine
         {
             _args = args;
             Delimiter = ':';
-            CaseInsensitive = true;
+            CaseSensitive = false;
+            CommandSuffix = "Command";
+            ArgumentSuffix = "Argument";
         }
 
         /// <summary>
@@ -62,14 +64,14 @@ namespace clParse.CommandLine
             // by name without having to loop through them.
             foreach (var arg in _args)
             {
-                argObjectsHash.Add(CaseInsensitive ? arg.GetType().Name.ToLower() : arg.GetType().Name, arg);
+                argObjectsHash.Add(CaseSensitive ? arg.GetType().Name : arg.GetType().Name.ToLower(), arg);
             }
             
             // Loop through command line array
             foreach (var str in argumentsFromCommandLine)
             {
                 var strArgAsArray = str.Split(Delimiter);
-                var strArgName = CaseInsensitive ? strArgAsArray[0].ToLower() : strArgAsArray[0];
+                var strArgName = CaseSensitive ? strArgAsArray[0] : strArgAsArray[0].ToLower();
 
                 // If there's a delimiter, it's a named argument
                 if (strArgAsArray.Length > 1)
@@ -78,7 +80,7 @@ namespace clParse.CommandLine
                     var hashKey = strArgName + ArgumentSuffix;
                     if (argObjectsHash.Contains(hashKey))
                     {
-                        var arg = (IArgumentWithValue)argObjectsHash[hashKey];
+                        var arg = (NamedArgument)argObjectsHash[hashKey];
                         arg.Name = strArgAsArray[0];
                         arg.Value = strArgAsArray[1];
                         parsedArguments.Add(arg);
