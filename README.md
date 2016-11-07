@@ -9,12 +9,6 @@ what it will be doing, and its behavior can be modified by SwitchArguments.  Com
 define its own response loop, and will have a Status property of Successful once it is done, allowing 
 you to loop until this happens (or until the Status is not equal to Executing).
 
-This project uses some "convention over configuration" philosophy when tying arguments in a command
-line to their appropriate classes in the application.  Instead of giving an object a property that
-must match the string from the command line, an argument is matched up with the object by its class
-name.  So a named argument like this `/estimate:5` will look for a NamedArgument subclass called
-EstimateArgument, and will set the Value property to 5.
-
 ## Usage
 Lorem ipsum blah blah.
 
@@ -63,4 +57,5 @@ This should fail because IdArgument should be required for the StartCommand.
 
 ## Notes
  - Need to use reflection to get the name of an argument, save it to a read-only Name property for ease of use.
- - 
+ - ArgumentCollection a Hashtable but with helper properties to get sections of the table, like UnknownArguments, 
+ CommandArguments, Switches, etc.

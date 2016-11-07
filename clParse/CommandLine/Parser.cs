@@ -50,6 +50,7 @@ namespace clParse.CommandLine
         {
             _args = args;
             Delimiter = ':';
+            Prefix = '/';
             CaseSensitive = false;
             CommandSuffix = "Command";
             ArgumentSuffix = "Argument";
@@ -63,16 +64,16 @@ namespace clParse.CommandLine
         /// * If an arg is found that doesn't match to an argument object, throw an exception
         /// </summary>
         /// <param name="argumentsFromCommandLine">A straight copy of the args[] from the command line of the program</param>
-        public List<IArgument> Parse(string[] argumentsFromCommandLine)
+        public Hashtable Parse(string[] argumentsFromCommandLine)
         {
             var argObjectsHash = new Hashtable();
-            var parsedArguments = new List<IArgument>();
+            var parsedArguments = new Hashtable();
 
             // Create a Hashtable of Arguments passed in via constructor so we can look them up
             // by name without having to loop through them.
             foreach (var arg in _args)
             {
-                argObjectsHash.Add(CaseSensitive ? arg.GetType().Name : arg.GetType().Name.ToLower(), arg);
+                argObjectsHash.Add(CaseSensitive ? arg.Name : arg.Name.ToLower(), arg);
             }
             
             // Loop through command line array
@@ -80,30 +81,35 @@ namespace clParse.CommandLine
             {
                 var strArgAsArray = str.Split(Delimiter);
                 var strArgName = CaseSensitive ? strArgAsArray[0] : strArgAsArray[0].ToLower();
-
+                var argumentWasFound = false;
+                strArgName = strArgName.Replace(Convert.ToString(Prefix), "");
+                
                 // If there's a delimiter, it's a named argument
                 if (strArgAsArray.Length > 1)
                 {
                     var strArgValue = strArgAsArray[1];
-                    var hashKey = strArgName + ArgumentSuffix;
+                    var hashKey = strArgName;
                     if (argObjectsHash.Contains(hashKey))
                     {
                         var arg = (NamedArgument)argObjectsHash[hashKey];
-                        arg.Name = strArgAsArray[0];
+                        argumentWasFound = true;
                         arg.Value = strArgAsArray[1];
-                        parsedArguments.Add(arg);
+                        parsedArguments.Add(arg.Name, arg);
                     }
                 }
                 else
                 {
-                    var hashKey = strArgName + CommandSuffix;
+                    var hashKey = strArgName;
                     if (argObjectsHash.Contains(hashKey))
                     {
                         var arg = (CommandArgument)argObjectsHash[hashKey];
+                        argumentWasFound = true;
                         arg.Name = strArgAsArray[0];
-                        parsedArguments.Add(arg);
+                        parsedArguments.Add(arg.Name, arg);
                     }
                 }
+                if (!argumentWasFound)
+                    throw new ArgumentException($"{strArgName} was not a valid argument.");
             }
             return parsedArguments;
         }

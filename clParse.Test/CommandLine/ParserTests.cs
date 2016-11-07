@@ -12,7 +12,7 @@ namespace clParse.CommandLine.Tests
     [TestClass()]
     public class ParserTests
     {
-        private class HelpCommand : CommandArgument
+        private class Help : CommandArgument
         {
             public override void Command(IEnumerable<IArgument> args)
             {
@@ -29,7 +29,7 @@ namespace clParse.CommandLine.Tests
         [TestMethod()]
         public void ParseSingleCommand_CI_Test()
         {
-            var hc = new HelpCommand();
+            var hc = new Help();
             var lst = new List<IArgument>() { hc };
             var parser = new Parser(lst);
             var testArgs = new string[] { "help" };
@@ -42,7 +42,7 @@ namespace clParse.CommandLine.Tests
         [TestMethod()]
         public void ParseSingleCommand_CS_ShouldMatch_Test()
         {
-            var hc = new HelpCommand();
+            var hc = new Help();
             var lst = new List<IArgument>() { hc };
             var parser = new Parser(lst) { CaseSensitive = true };
             var testArgs = new string[] { "Help" };
@@ -52,31 +52,45 @@ namespace clParse.CommandLine.Tests
             Assert.AreEqual(1, rtn.Count);
         }
 
+        [ExpectedException(typeof(ArgumentException))]
         [TestMethod()]
         public void ParseSingleCommand_CS_ShouldNotMatch_Test()
         {
-            var hc = new HelpCommand();
+            var hc = new Help();
             var lst = new List<IArgument>() { hc };
             var parser = new Parser(lst) { CaseSensitive = true };
             var testArgs = new string[] { "help" };
 
             var rtn = parser.Parse(testArgs);
-
-            Assert.AreEqual(0, rtn.Count);
         }
+
         [TestMethod()]
         public void ParseNamedArgumentWithValue_Test()
         {
-            var na = new NamedArgument();
-            var lst = new List<IArgument>() { na };
+            var na = new EstimateArgument() { Name = "Estimate" };
+            var dc = new Help() { Name = "dummyCommand" };
+            var lst = new List<IArgument>() { na, dc };
             var parser = new Parser(lst);
-            var testArgs = new string[] { "/estimate:5" };
+            var testArgs = new string[] { "/estimate:5", "dummyCommand" };
 
             var rtn = parser.Parse(testArgs);
 
-            Assert.AreEqual(1, rtn.Count);
-            Assert.AreEqual("Estimate", ((NamedArgument)rtn[0]).Name);
-            Assert.AreEqual("5", ((NamedArgument)rtn[0]).Value);
+            Assert.AreEqual(2, rtn.Count);
+            Assert.AreEqual("Estimate", ((NamedArgument)rtn["Estimate"]).Name);
+            Assert.AreEqual("5", ((NamedArgument)rtn["Estimate"]).Value);
+        }
+
+        [ExpectedException(typeof (ArgumentException))]
+        [TestMethod()]
+        public void ParseArgumentDoesntExistFails_Test()
+        {
+            var na = new EstimateArgument() { Name = "Estimate" };
+            var dc = new Help() { Name = "dummyCommand" };
+            var lst = new List<IArgument>() { na, dc };
+            var parser = new Parser(lst);
+            var testArgs = new string[] { "/estimate:5", "dummyCommand", "/dummySwitchFails" };
+
+            var rtn = parser.Parse(testArgs);
         }
     }
 }
