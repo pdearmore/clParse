@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandLine\Argument.cs" />
+    <Compile Include="CommandLine\ArgumentHashtable.cs" />
     <Compile Include="CommandLine\CommandArgument.cs" />
     <Compile Include="CommandLine\Enums\CommandStatus.cs" />
     <Compile Include="CommandLine\Interfaces\IArgumentWithValue.cs" />

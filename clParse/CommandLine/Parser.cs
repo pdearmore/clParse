@@ -25,25 +25,6 @@ namespace clParse.CommandLine
         
         private string _commandSuffix;
 
-        /// <summary>
-        /// CommandSuffix is what to call a class that should be interpreted as a command-style argument
-        /// </summary>
-        public string CommandSuffix
-        {
-            get { return CaseSensitive ? _commandSuffix : _commandSuffix.ToLower() ; }
-            set { _commandSuffix = value; }
-        }
-
-        private string _argumentSuffix;
-
-        public string ArgumentSuffix
-        {
-            get { return CaseSensitive ? _argumentSuffix : _argumentSuffix.ToLower(); }
-            set { _argumentSuffix = value; }
-        }
-
-
-
         public IEnumerable<IArgument> Arguments { get; set; }
 
         public Parser(IEnumerable<IArgument> args)
@@ -52,8 +33,6 @@ namespace clParse.CommandLine
             Delimiter = ':';
             Prefix = '/';
             CaseSensitive = false;
-            CommandSuffix = "Command";
-            ArgumentSuffix = "Argument";
         }
 
         /// <summary>
@@ -64,12 +43,13 @@ namespace clParse.CommandLine
         /// * If an arg is found that doesn't match to an argument object, throw an exception
         /// </summary>
         /// <param name="argumentsFromCommandLine">A straight copy of the args[] from the command line of the program</param>
-        public Hashtable Parse(string[] argumentsFromCommandLine)
+        public ArgumentDictionary Parse(string[] argumentsFromCommandLine)
         {
             var argObjectsHash = new Hashtable();
-            var parsedArguments = new Hashtable();
+            var parsedArguments = new ArgumentDictionary();
+            var unknown = new List<string>();
 
-            // Create a Hashtable of Arguments passed in via constructor so we can look them up
+            // Create a ArgumentDictionary of Arguments passed in via constructor so we can look them up
             // by name without having to loop through them.
             foreach (var arg in _args)
             {
@@ -109,8 +89,11 @@ namespace clParse.CommandLine
                     }
                 }
                 if (!argumentWasFound)
-                    throw new ArgumentException($"{strArgName} was not a valid argument.");
+                {
+                    unknown.Add(strArgName);
+                }
             }
+            parsedArguments.UnknownArguments = unknown.ToArray();
             return parsedArguments;
         }
     }

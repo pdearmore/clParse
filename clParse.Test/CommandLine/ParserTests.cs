@@ -16,7 +16,6 @@ namespace clParse.CommandLine.Tests
         {
             public override void Command(IEnumerable<IArgument> args)
             {
-                var x = 1;
             }
         }
 
@@ -51,8 +50,7 @@ namespace clParse.CommandLine.Tests
 
             Assert.AreEqual(1, rtn.Count);
         }
-
-        [ExpectedException(typeof(ArgumentException))]
+        
         [TestMethod()]
         public void ParseSingleCommand_CS_ShouldNotMatch_Test()
         {
@@ -62,6 +60,8 @@ namespace clParse.CommandLine.Tests
             var testArgs = new string[] { "help" };
 
             var rtn = parser.Parse(testArgs);
+
+            Assert.AreEqual(1, rtn.UnknownArguments.Length);
         }
 
         [TestMethod()]
@@ -79,8 +79,7 @@ namespace clParse.CommandLine.Tests
             Assert.AreEqual("Estimate", ((NamedArgument)rtn["Estimate"]).Name);
             Assert.AreEqual("5", ((NamedArgument)rtn["Estimate"]).Value);
         }
-
-        [ExpectedException(typeof (ArgumentException))]
+        
         [TestMethod()]
         public void ParseArgumentDoesntExistFails_Test()
         {
@@ -91,6 +90,8 @@ namespace clParse.CommandLine.Tests
             var testArgs = new string[] { "/estimate:5", "dummyCommand", "/dummySwitchFails" };
 
             var rtn = parser.Parse(testArgs);
+
+            Assert.AreEqual(1, rtn.UnknownArguments.Length);
         }
     }
 }
