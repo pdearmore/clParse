@@ -11,6 +11,7 @@ namespace clParse.CommandLine
     public class ArgumentDictionary : Dictionary<string, IArgument>
     {
         public string[] UnknownArguments { get; set; }
+        // TODO: Test this if subclass of command argument
         public CommandArgument CommandArgument {
             get {
                 var rtn = from ca 

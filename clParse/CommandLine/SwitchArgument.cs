@@ -13,7 +13,11 @@ namespace clParse.CommandLine
         public string HelpDetail { get; set; }
         public string HelpExample { get; set; }
         public string Summary { get; set; }
+        public bool Value { get; set; }
 
-        public abstract void ProcessArgument(IEnumerable<IArgument> args);
+        public SwitchArgument()
+        {
+            Value = false;
+        }
     }
 }

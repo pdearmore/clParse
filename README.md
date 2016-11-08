@@ -56,6 +56,7 @@ in the argument list, and if 0, show an error message that tells the user they c
 This should fail because IdArgument should be required for the StartCommand.
 
 ## Notes
- - Need to use reflection to get the name of an argument, save it to a read-only Name property for ease of use.
- - ArgumentCollection a Hashtable but with helper properties to get sections of the table, like UnknownArguments, 
+ - Need to use reflection to get the name of an argument, save it to a read-only Name property for ease of use if
+ no name is specifically given.
+ - ArgumentCollection a Dictionary but with helper properties to get sections of the table, like UnknownArguments, 
  CommandArguments, Switches, etc.
