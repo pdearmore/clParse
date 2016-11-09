@@ -60,3 +60,5 @@ This should fail because IdArgument should be required for the StartCommand.
  no name is specifically given.
  - ArgumentCollection a Dictionary but with helper properties to get sections of the table, like UnknownArguments, 
  CommandArguments, Switches, etc.
+ - Even if the command line arguments are case insensitive, referring to the elements of the dictionary collection 
+ are case sensitive.
