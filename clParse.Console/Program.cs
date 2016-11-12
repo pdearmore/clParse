@@ -17,8 +17,11 @@ namespace clParse
         /// <param name="args">Set these prior to testing</param>
         public static void Main(string[] args)
         {
-            var hc = new HelpCommand() { Name = "help" };
-            var lst = new List<IArgument>() { hc };
+            var helpCommand = new HelpCommand() { Name = "help" };
+            var startCommand = new StartCommand() { Name = "start" };
+
+            var lst = new List<IArgument>() { helpCommand, startCommand };
+
             var parser = new Parser(lst);
 
             var rtn = parser.Parse(args);
