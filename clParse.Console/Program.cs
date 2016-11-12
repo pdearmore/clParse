@@ -18,9 +18,10 @@ namespace clParse
         public static void Main(string[] args)
         {
             var helpCommand = new HelpCommand() { Name = "help" };
-            var startCommand = new StartCommand() { Name = "start" };
+            var idArgument = new NamedArgument() { Name = "id" };
+            var startCommand = new StartCommand() { Name = "start", RequiredArguments = new List<IArgument>() { idArgument } };
 
-            var lst = new List<IArgument>() { helpCommand, startCommand };
+            var lst = new List<IArgument>() { helpCommand, startCommand, idArgument };
 
             var parser = new Parser(lst);
 
