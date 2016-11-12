@@ -10,7 +10,7 @@ namespace clParse.Timer
 {
     public class HelpCommand : CommandArgument
     {
-        public override void Command(IEnumerable<IArgument> args)
+        public override void Command(ArgumentDictionary args)
         {
             Console.WriteLine("Called for help.");
         }

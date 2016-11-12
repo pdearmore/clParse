@@ -13,14 +13,14 @@ namespace clParse.CommandLine
     {
         public CommandStatus Status { get; set; }
 
-        public abstract void Command(IEnumerable<IArgument> args);
+        public abstract void Command(ArgumentDictionary args);
 
         public CommandArgument()
         {
             Status = CommandStatus.NotRun;
         }
 
-        public void ProcessCommand(IEnumerable<IArgument> args)
+        public void ProcessCommand(ArgumentDictionary args)
         {
             Status = CommandStatus.Executing;
 

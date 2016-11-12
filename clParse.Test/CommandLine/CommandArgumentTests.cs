@@ -15,7 +15,7 @@ namespace clParse.CommandLine.Tests
     {
         private class FailedTestCommand : CommandArgument
         {
-            public override void Command(IEnumerable<IArgument> args)
+            public override void Command(ArgumentDictionary args)
             {
                 Status = CommandStatus.Failed;
             }
@@ -23,10 +23,8 @@ namespace clParse.CommandLine.Tests
 
         private class SuccessfulTestCommand : CommandArgument
         {
-            public override void Command(IEnumerable<IArgument> args)
+            public override void Command(ArgumentDictionary args)
             {
-                // Just some dummy code
-                var x = 1;
             }
         }
 
@@ -34,7 +32,8 @@ namespace clParse.CommandLine.Tests
         public void ProcessArgument_StatusSuccess()
         {
             SuccessfulTestCommand sc = new SuccessfulTestCommand();
-            var args = new List<IArgument>() {sc};
+            var args = new ArgumentDictionary();
+            args.Add("test", sc);
 
             Assert.AreEqual(CommandStatus.NotRun, sc.Status);
 
@@ -47,7 +46,8 @@ namespace clParse.CommandLine.Tests
         public void ProcessArgument_StatusFailed()
         {
             FailedTestCommand tc = new FailedTestCommand();
-            var args = new List<IArgument>() {tc};
+            var args = new ArgumentDictionary();
+            args.Add("test", tc);
 
             Assert.AreEqual(CommandStatus.NotRun, tc.Status);
 

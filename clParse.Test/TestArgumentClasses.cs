@@ -10,14 +10,14 @@ namespace clParse.Test
 {
     public class Help : CommandArgument
     {
-        public override void Command(IEnumerable<IArgument> args)
+        public override void Command(ArgumentDictionary args)
         {
         }
     }
 
     public class StartCommand : CommandArgument
     {
-        public override void Command(IEnumerable<IArgument> args)
+        public override void Command(ArgumentDictionary args)
         {
         }
     }

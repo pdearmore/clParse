@@ -23,8 +23,6 @@ namespace clParse.CommandLine
         public char Prefix { get; set; }
         public bool CaseSensitive { get; set; }
         
-        private string _commandSuffix;
-
         public IEnumerable<IArgument> Arguments { get; set; }
 
         public Parser(IEnumerable<IArgument> args)
