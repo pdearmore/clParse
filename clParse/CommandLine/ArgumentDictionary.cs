@@ -18,6 +18,10 @@ namespace clParse.CommandLine
         /// </summary>
         public string[] UnknownArguments { get; set; }
 
+        public ArgumentDictionary() : base(StringComparer.InvariantCultureIgnoreCase)
+        {
+        }
+
         public SwitchArgument[] SwitchArguments
         {
             get

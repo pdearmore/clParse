@@ -17,11 +17,18 @@ namespace clParse
         /// <param name="args">Set these prior to testing</param>
         public static void Main(string[] args)
         {
+            // Test combos:
+            // start /id:1
+            // help
+            // newitem /name:"New Item" /estimate:5 /complete
+
             var helpCommand = new HelpCommand() { Name = "help" };
             var idArgument = new NamedArgument() { Name = "id" };
+            var newItemCommand = new NewItemCommand() { Name = "newitem" };
+            var nameArgument = new NamedArgument() { Name = "Name" };
             var startCommand = new StartCommand() { Name = "start", RequiredArguments = new List<IArgument>() { idArgument } };
-
-            var lst = new List<IArgument>() { helpCommand, startCommand, idArgument };
+             
+            var lst = new List<IArgument>() { helpCommand, startCommand, idArgument, newItemCommand, nameArgument };
 
             var parser = new Parser(lst);
 

@@ -112,7 +112,7 @@ namespace clParse.CommandLine
                 foreach (var arg in matchedArguments.CommandArgument.RequiredArguments)
                 {
                     if (!matchedArguments.ContainsKey(arg.Name))
-                        throw new ArgumentException("Required argument was not specified.");
+                        throw new ArgumentException($"Required argument '{arg.Name}' was not specified.");
                 }
             }
 
