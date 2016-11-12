@@ -108,6 +108,16 @@ namespace clParse.CommandLine
                     unknownArguments.Add(strArgName);
                 }
             }
+
+            if (matchedArguments.CommandArgument != null)
+            {
+                foreach (var arg in matchedArguments.CommandArgument.RequiredArguments)
+                {
+                    if (!matchedArguments.ContainsKey(arg.Name))
+                        throw new ArgumentException("Required argument was not specified.");
+                }
+            }
+
             matchedArguments.UnknownArguments = unknownArguments.ToArray();
             return matchedArguments;
         }

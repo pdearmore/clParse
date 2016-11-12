@@ -6,30 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using clParse.CommandLine.Interfaces;
+using clParse.Test;
 
 namespace clParse.CommandLine.Tests
 {
     [TestClass()]
     public class ParserTests
     {
-        private class Help : CommandArgument
-        {
-            public override void Command(IEnumerable<IArgument> args)
-            {
-            }
-        }
-
-        private class EstimateArgument : NamedArgument
-        {
-
-        }
-
-        private class CompletedSwitch : SwitchArgument
-        {
-
-        }
-
-
         [TestMethod()]
         public void ParseSingleCommand_CI_Test()
         {
@@ -102,44 +85,31 @@ namespace clParse.CommandLine.Tests
         }
 
         [TestMethod()]
-        public void ParseArgumentDoesntExistFails_Test()
+        public void ParseCommandWithRequiredArgumentPasses_Test()
         {
-            var na = new EstimateArgument() { Name = "Estimate" };
-            var dc = new Help() { Name = "dummyCommand" };
-            var lst = new List<IArgument>() { na, dc };
+            var idArg = new IdArgument() { Name = "id" };
+            var startCmd = new StartCommand() { Name = "start", RequiredArguments = new List<IArgument>() { idArg } };
+            var lst = new List<IArgument>() { startCmd, idArg };
             var parser = new Parser(lst);
-            var testArgs = new string[] { "/estimate:5", "dummyCommand", "/dummySwitchFails" };
+            var testArgs = new string[] { "start", "/id:5", "/dummySwitch" };
 
             var rtn = parser.Parse(testArgs);
 
-            Assert.AreEqual(1, rtn.UnknownArguments.Length);
+            // (doesn't raise an exception)
+            Assert.AreEqual(startCmd, rtn.CommandArgument);
         }
 
         [TestMethod()]
-        public void ParseCommandCorrectlyIdentified_Test()
+        [ExpectedException(typeof(ArgumentException))]
+        public void ParseCommandWithoutRequiredArgumentFails_Test()
         {
-            var na = new EstimateArgument() { Name = "Estimate" };
-            var dc = new Help() { Name = "dummyCommand" };
-            var lst = new List<IArgument>() { na, dc };
+            var idArg = new IdArgument() { Name = "id" };
+            var startCmd = new StartCommand() { Name = "start", RequiredArguments = new List<IArgument>() { idArg } };
+            var lst = new List<IArgument>() { startCmd, idArg };
             var parser = new Parser(lst);
-            var testArgs = new string[] { "/estimate:5", "dummyCommand", "/dummySwitchFails" };
+            var testArgs = new string[] { "start", "/dummySwitch" };
 
             var rtn = parser.Parse(testArgs);
-
-            Assert.AreEqual(dc, rtn.CommandArgument);
-        }
-
-        [TestMethod()]
-        public void ParseCommandReturnsNull_Test()
-        {
-            var na = new EstimateArgument() { Name = "Estimate" };
-            var lst = new List<IArgument>() { na };
-            var parser = new Parser(lst);
-            var testArgs = new string[] { "/estimate:5", "/dummySwitchFails" };
-
-            var rtn = parser.Parse(testArgs);
-
-            Assert.IsNull(rtn.CommandArgument);
         }
     }
 }

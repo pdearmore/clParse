@@ -8,9 +8,28 @@ using System.Threading.Tasks;
 
 namespace clParse.CommandLine
 {
+    /// <summary>
+    /// A collection of arguments keyed to the argument name.  Contains subcollections for easier access to different argument types.
+    /// </summary>
     public class ArgumentDictionary : Dictionary<string, IArgument>
     {
+        /// <summary>
+        /// Arguments passed in to the parser from the command line that are not recognized in the collection of defined arguments.
+        /// </summary>
         public string[] UnknownArguments { get; set; }
+
+        public SwitchArgument[] SwitchArguments
+        {
+            get
+            {
+                var rtn = from sa
+                          in Values
+                          where sa.GetType().IsSubclassOf(typeof(SwitchArgument))
+                          select (SwitchArgument)sa;
+                return rtn.ToArray();
+            }
+        }
+
         public CommandArgument CommandArgument {
             get {
                 var rtn = from ca 

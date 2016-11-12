@@ -17,9 +17,11 @@ namespace clParse.CommandLine
         public string HelpExample { get; set; }
         public string Summary { get; set; }
 
+        public IEnumerable<IArgument> RequiredArguments;
+
         public Argument()
         {
-
+            RequiredArguments = new List<IArgument>();
         }
     }
 }
