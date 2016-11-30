@@ -100,6 +100,23 @@ namespace clParse.CommandLine.Tests
         }
 
         [TestMethod()]
+        public void ParseWithMultipleDelimitersPasses_Test()
+        {
+            var idArg = new IdArgument() { Name = "id" };
+            var est = new EstimateArgument() { Name = "estimate" };
+            var lst = new List<IArgument>() { est, idArg };
+            var parser = new Parser(lst) { Delimiter = new char[] {':', '='} };
+
+            // Note that both : and = are used as delimiters
+            var testArgs = new string[] { "/id:20", "/estimate=5" };
+
+            var rtn = parser.Parse(testArgs);
+
+            Assert.AreEqual("5", ((NamedArgument)rtn["estimate"]).Value);
+            Assert.AreEqual("20", ((NamedArgument)rtn["id"]).Value);
+        }
+
+        [TestMethod()]
         [ExpectedException(typeof(ArgumentException))]
         public void ParseCommandWithoutRequiredArgumentFails_Test()
         {

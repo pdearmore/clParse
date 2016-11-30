@@ -7,7 +7,7 @@ using clParse.CommandLine.Interfaces;
 
 namespace clParse.CommandLine
 {
-    public abstract class SwitchArgument : IArgument
+    public class SwitchArgument : IArgument
     {
         public string Name { get; set; }
         public string HelpDetail { get; set; }

@@ -15,7 +15,7 @@ namespace clParse.CommandLine
         /// <summary>
         /// Delimiter is the character that separates a named argument from its value
         /// </summary>
-        public char Delimiter { get; set; }
+        public char[] Delimiter { get; set; }
 
         /// <summary>
         /// Prefix is the character that precedes an argument (not a command)
@@ -28,7 +28,7 @@ namespace clParse.CommandLine
         public Parser(IEnumerable<IArgument> args)
         {
             _args = args;
-            Delimiter = ':';
+            Delimiter = new char[] { ':' };
             Prefix = '/';
             CaseSensitive = false;
         }
@@ -59,7 +59,21 @@ namespace clParse.CommandLine
             // Loop through command line array
             foreach (var str in argumentsFromCommandLine)
             {
-                var strArgAsArray = str.Split(Delimiter);
+                string[] strArgAsArray;
+
+                strArgAsArray = str.Split(Delimiter[0]);
+                if (Delimiter.Length > 1)
+                {
+                    for (int i = 0; i < Delimiter.Length; i++)
+                    {
+                        if (str.Contains(Delimiter[i]))
+                        {
+                            strArgAsArray = str.Split(Delimiter[i]);
+                            break;
+                        }
+                    }
+                }
+
                 var strArgName = CaseSensitive ? strArgAsArray[0] : strArgAsArray[0].ToLower();
                 var argumentWasFound = false;
                 strArgName = strArgName.Replace(Convert.ToString(Prefix), "");
