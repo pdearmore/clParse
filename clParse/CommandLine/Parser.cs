@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using clParse.CommandLine.Interfaces;
+using clParse.CommandLine.Exceptions;
 
 namespace clParse.CommandLine
 {
@@ -45,7 +46,7 @@ namespace clParse.CommandLine
         /// unknown strings from the command line.</returns>
         public ArgumentDictionary Parse(string[] argumentsFromCommandLine)
         {
-            var argObjectsFromCommandLineHash = new Hashtable();
+            var codeObjectsHash = new Hashtable();
             var matchedArguments = new ArgumentDictionary();
             var unknownArguments = new List<string>();
 
@@ -53,9 +54,42 @@ namespace clParse.CommandLine
             // by name without having to loop through them.
             foreach (var arg in _args)
             {
-                argObjectsFromCommandLineHash.Add(CaseSensitive ? arg.Name : arg.Name.ToLower(), arg);
+                codeObjectsHash.Add(CaseSensitive ? arg.Name : arg.Name.ToLower(), arg);
             }
-            
+
+            // Find the command object first so that we can parse unnamed sequence command line styles.
+            var possibleCommandArgs = _args.OfType<CommandArgument>();
+            var matchedCommandArgs = new ArgumentDictionary();
+
+            // Find a command argument, or if not, use the default
+            var defaultCommand = from c in possibleCommandArgs where c.Default == true select c;
+            if (defaultCommand.Count() > 1)
+                throw new DefaultArgumentException("There can be only one default argument.");
+
+            foreach (var str in argumentsFromCommandLine)
+            {
+                var hashKey = CaseSensitive ? str : str.ToLower();
+                if (codeObjectsHash.Contains(hashKey))
+                {
+                    var arg = (CommandArgument)codeObjectsHash[hashKey];
+                    matchedArguments.Add(arg.Name, arg);
+                    matchedCommandArgs.Add(arg.Name, arg);
+                }
+            }
+            if (matchedCommandArgs.Count > 1)
+                throw new ArgumentException("There cannot be more than one command.");
+            else if (matchedCommandArgs.Count < 1)
+            {
+                if (defaultCommand.Count() < 1)
+                    throw new DefaultArgumentException("No commands supplied and no default specified.");
+                else
+                {
+                    var arg = defaultCommand.FirstOrDefault();
+                    matchedArguments.Add(arg.Name, arg);
+                    matchedCommandArgs.Add(arg.Name, arg);
+                }
+            }
+
             // Loop through command line array
             foreach (var str in argumentsFromCommandLine)
             {
@@ -83,9 +117,9 @@ namespace clParse.CommandLine
                 {
                     var strArgValue = strArgAsArray[1];
                     var hashKey = strArgName;
-                    if (argObjectsFromCommandLineHash.Contains(hashKey))
+                    if (codeObjectsHash.Contains(hashKey))
                     {
-                        var arg = (NamedArgument)argObjectsFromCommandLineHash[hashKey];
+                        var arg = (NamedArgument)codeObjectsHash[hashKey];
                         argumentWasFound = true;
                         arg.Value = strArgAsArray[1];
                         matchedArguments.Add(arg.Name, arg);
@@ -95,20 +129,21 @@ namespace clParse.CommandLine
                 else if (!strArgAsArray[0].Contains(Prefix))
                 {
                     var hashKey = strArgName;
-                    if (argObjectsFromCommandLineHash.Contains(hashKey))
+                    if (codeObjectsHash.Contains(hashKey))
                     {
-                        var arg = (CommandArgument)argObjectsFromCommandLineHash[hashKey];
+                        var arg = (CommandArgument)codeObjectsHash[hashKey];
                         argumentWasFound = true;
-                        matchedArguments.Add(arg.Name, arg);
+                        if (!matchedArguments.ContainsKey(arg.Name))
+                            matchedArguments.Add(arg.Name, arg);
                     }
                 }
                 // if it's neither a named argument or command, it must be a switch
                 else
                 {
                     var hashKey = strArgName;
-                    if (argObjectsFromCommandLineHash.Contains(hashKey))
+                    if (codeObjectsHash.Contains(hashKey))
                     {
-                        var arg = (SwitchArgument)argObjectsFromCommandLineHash[hashKey];
+                        var arg = (SwitchArgument)codeObjectsHash[hashKey];
                         argumentWasFound = true;
                         arg.Value = true;
                         matchedArguments.Add(arg.Name, arg);
@@ -126,7 +161,7 @@ namespace clParse.CommandLine
                 foreach (var arg in matchedArguments.CommandArgument.RequiredArguments)
                 {
                     if (!matchedArguments.ContainsKey(arg.Name))
-                        throw new ArgumentException($"Required argument '{arg.Name}' was not specified.");
+                        throw new RequiredArgumentException($"Required argument '{arg.Name}' was not specified.");
                 }
             }
 

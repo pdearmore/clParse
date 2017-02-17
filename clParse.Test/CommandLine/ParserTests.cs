@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using clParse.CommandLine.Interfaces;
 using clParse.Test;
+using clParse.CommandLine.Exceptions;
 
 namespace clParse.CommandLine.Tests
 {
@@ -43,9 +44,10 @@ namespace clParse.CommandLine.Tests
         public void ParseSingleCommand_CS_ShouldNotMatch_Test()
         {
             var hc = new Help();
+            var est = new EstimateArgument() { Name = "estimate" };
             var lst = new List<IArgument>() { hc };
             var parser = new Parser(lst) { CaseSensitive = true };
-            var testArgs = new string[] { "help" };
+            var testArgs = new string[] { "Help", "/Estimate:20" };
 
             var rtn = parser.Parse(testArgs);
 
@@ -74,7 +76,8 @@ namespace clParse.CommandLine.Tests
             var na = new EstimateArgument() { Name = "Estimate" };
             var dc = new CompletedSwitch() { Name = "Completed" };
             var ic = new CompletedSwitch() { Name = "Incomplete" };
-            var lst = new List<IArgument>() { na, dc };
+            var startCmd = new StartCommand() { Name = "start", Default = true };
+            var lst = new List<IArgument>() { na, dc, startCmd };
             var parser = new Parser(lst);
             var testArgs = new string[] { "/estimate:5", "/completed" };
 
@@ -104,7 +107,8 @@ namespace clParse.CommandLine.Tests
         {
             var idArg = new IdArgument() { Name = "id" };
             var est = new EstimateArgument() { Name = "estimate" };
-            var lst = new List<IArgument>() { est, idArg };
+            var startCmd = new StartCommand() { Name = "start", Default = true};
+            var lst = new List<IArgument>() { est, idArg, startCmd };
             var parser = new Parser(lst) { Delimiter = new char[] {':', '='} };
 
             // Note that both : and = are used as delimiters
@@ -117,16 +121,76 @@ namespace clParse.CommandLine.Tests
         }
 
         [TestMethod()]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(RequiredArgumentException))]
         public void ParseCommandWithoutRequiredArgumentFails_Test()
         {
             var idArg = new IdArgument() { Name = "id" };
             var startCmd = new StartCommand() { Name = "start", RequiredArguments = new List<IArgument>() { idArg } };
-            var lst = new List<IArgument>() { startCmd, idArg };
+            var hc = new Help();
+            var lst = new List<IArgument>() { startCmd, hc, idArg };
             var parser = new Parser(lst);
             var testArgs = new string[] { "start", "/dummySwitch" };
 
             var rtn = parser.Parse(testArgs);
+        }
+
+        [TestMethod()]
+        [ExpectedException(typeof(DefaultArgumentException))]
+        public void MultipleDefaultArgumentFails_Test()
+        {
+            var idArg = new IdArgument() { Name = "id" };
+            var startCmd = new StartCommand() { Name = "start", Default = true };
+            var hc = new Help() { Default = true };
+            var lst = new List<IArgument>() { startCmd, hc, idArg };
+            var parser = new Parser(lst);
+            var testArgs = new string[] { "start", "/dummySwitch" };
+
+            var rtn = parser.Parse(testArgs);
+        }
+
+        [TestMethod()]
+        [ExpectedException(typeof(ArgumentException))]
+        public void MultipleCommandArgumentFails_Test()
+        {
+            var idArg = new IdArgument() { Name = "id" };
+            var startCmd = new StartCommand() { Name = "start", Default = true };
+            var hc = new Help();
+            var lst = new List<IArgument>() { startCmd, hc, idArg };
+            var parser = new Parser(lst);
+            var testArgs = new string[] { "start", "help", "/dummySwitch" };
+
+            var rtn = parser.Parse(testArgs);
+        }
+
+        [TestMethod()]
+        [ExpectedException(typeof(DefaultArgumentException))]
+        public void ThrowErrorIfNoCommandOrDefaultFails_Test()
+        {
+            var idArg = new IdArgument() { Name = "id" };
+            var startCmd = new StartCommand() { Name = "start" };
+            var hc = new Help();
+            var lst = new List<IArgument>() { startCmd, hc, idArg };
+            var parser = new Parser(lst);
+            var testArgs = new string[] { "/dummySwitch" };
+
+            var rtn = parser.Parse(testArgs);
+        }
+
+        [TestMethod()]
+        public void DefaultArgumentCorrectlyUsed_Test()
+        {
+            var idArg = new IdArgument() { Name = "id" };
+            var est = new EstimateArgument() { Name = "estimate" };
+            var startCmd = new StartCommand() { Name = "start", Default = true };
+            var lst = new List<IArgument>() { est, idArg, startCmd };
+            var parser = new Parser(lst) { Delimiter = new char[] { ':', '=' } };
+
+            // Start command not passed, but should be used anyway
+            var testArgs = new string[] { "/id:20", "/estimate=5" };
+
+            var rtn = parser.Parse(testArgs);
+
+            Assert.AreEqual(startCmd, (rtn.CommandArgument));
         }
     }
 }

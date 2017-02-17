@@ -18,10 +18,12 @@ namespace clParse.CommandLine
         public string Summary { get; set; }
 
         public IEnumerable<IArgument> RequiredArguments;
+        public IEnumerable<IArgument> PermittedArguments;
 
         public Argument()
         {
             RequiredArguments = new List<IArgument>();
+            PermittedArguments = new List<IArgument>();
         }
     }
 }

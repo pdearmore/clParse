@@ -44,6 +44,8 @@
     <Compile Include="CommandLine\ArgumentDictionary.cs" />
     <Compile Include="CommandLine\CommandArgument.cs" />
     <Compile Include="CommandLine\Enums\CommandStatus.cs" />
+    <Compile Include="CommandLine\Exceptions\DefaultArgumentException.cs" />
+    <Compile Include="CommandLine\Exceptions\RequiredArgumentException.cs" />
     <Compile Include="CommandLine\Interfaces\IArgumentWithValue.cs" />
     <Compile Include="CommandLine\NamedArgument.cs" />
     <Compile Include="CommandLine\Parser.cs" />

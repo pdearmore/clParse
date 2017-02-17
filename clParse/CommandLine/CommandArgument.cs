@@ -12,12 +12,14 @@ namespace clParse.CommandLine
     public abstract class CommandArgument : Argument
     {
         public CommandStatus Status { get; set; }
+        public bool Default { get; set; }
 
         public abstract void Command(ArgumentDictionary args);
 
         public CommandArgument()
         {
             Status = CommandStatus.NotRun;
+            Default = false;
         }
 
         public void ProcessCommand(ArgumentDictionary args)

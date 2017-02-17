@@ -28,19 +28,6 @@ namespace clParse.CommandLine.Tests
         }
 
         [TestMethod()]
-        public void ParseCommandReturnsNull_Test()
-        {
-            var na = new EstimateArgument() { Name = "Estimate" };
-            var lst = new List<IArgument>() { na };
-            var parser = new Parser(lst);
-            var testArgs = new string[] { "/estimate:5", "/dummySwitchFails" };
-
-            var rtn = parser.Parse(testArgs);
-
-            Assert.IsNull(rtn.CommandArgument);
-        }
-
-        [TestMethod()]
         public void ParseArgumentDoesntExistAddedToUnknown_Test()
         {
             var na = new EstimateArgument() { Name = "Estimate" };
