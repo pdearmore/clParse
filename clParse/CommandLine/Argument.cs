@@ -19,11 +19,13 @@ namespace clParse.CommandLine
 
         public IEnumerable<IArgument> RequiredArguments;
         public IEnumerable<IArgument> PermittedArguments;
+        public IEnumerable<IArgument> ArgumentSequence;
 
         public Argument()
         {
             RequiredArguments = new List<IArgument>();
             PermittedArguments = new List<IArgument>();
+            ArgumentSequence = new List<IArgument>();
         }
     }
 }

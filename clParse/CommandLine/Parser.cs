@@ -49,6 +49,7 @@ namespace clParse.CommandLine
             var codeObjectsHash = new Hashtable();
             var matchedArguments = new ArgumentDictionary();
             var unknownArguments = new List<string>();
+            IEnumerable<IArgument> activeSequence;
 
             // Create a ArgumentDictionary of Arguments passed in via constructor so we can look them up
             // by name without having to loop through them.
@@ -90,9 +91,18 @@ namespace clParse.CommandLine
                 }
             }
 
-            // Loop through command line array
-            foreach (var str in argumentsFromCommandLine)
+            activeSequence = ((CommandArgument)matchedCommandArgs.First().Value).ArgumentSequence;
+            if (matchedCommandArgs.Count == 1
+                && (activeSequence != null))
             {
+                // Using an argument sequence, so remove command argument for proper indexing
+                argumentsFromCommandLine = argumentsFromCommandLine.Where(val => val != matchedCommandArgs.First().Key).ToArray();
+            }
+
+            // Loop through command line array
+            for (int commandIndex = 0; commandIndex < argumentsFromCommandLine.Length; commandIndex++)
+            {
+                var str = argumentsFromCommandLine[commandIndex];
                 string[] strArgAsArray;
 
                 strArgAsArray = str.Split(Delimiter[0]);
@@ -125,8 +135,8 @@ namespace clParse.CommandLine
                         matchedArguments.Add(arg.Name, arg);
                     }
                 }
-                // If there's no prefix character, it's a command
-                else if (!strArgAsArray[0].Contains(Prefix))
+                // If there's no prefix character, and no sequence, it's a command
+                else if (!strArgAsArray[0].Contains(Prefix) && activeSequence == null)
                 {
                     var hashKey = strArgName;
                     if (codeObjectsHash.Contains(hashKey))
@@ -137,8 +147,8 @@ namespace clParse.CommandLine
                             matchedArguments.Add(arg.Name, arg);
                     }
                 }
-                // if it's neither a named argument or command, it must be a switch
-                else
+                // if it's neither a named argument or command, and it contains a prefix, it must be a switch
+                else if (strArgAsArray[0].Contains(Prefix))
                 {
                     var hashKey = strArgName;
                     if (codeObjectsHash.Contains(hashKey))
@@ -146,6 +156,18 @@ namespace clParse.CommandLine
                         var arg = (SwitchArgument)codeObjectsHash[hashKey];
                         argumentWasFound = true;
                         arg.Value = true;
+                        matchedArguments.Add(arg.Name, arg);
+                    }
+                }
+                // If there's a sequence, it's probably a sequential argument
+                else if (activeSequence != null)
+                {
+                    var hashKey = activeSequence.ElementAt(commandIndex).Name;
+                    if (codeObjectsHash.Contains(hashKey))
+                    {
+                        var arg = (IArgumentWithValue)codeObjectsHash[hashKey];
+                        argumentWasFound = true;
+                        arg.Value = strArgAsArray[0];
                         matchedArguments.Add(arg.Name, arg);
                     }
                 }
