@@ -56,6 +56,12 @@ namespace clParse.CommandLine
             foreach (var arg in _args)
             {
                 codeObjectsHash.Add(CaseSensitive ? arg.Name : arg.Name.ToLower(), arg);
+
+                // Add a copy for each alias for this argument into the collection
+                foreach (var alias in arg.Aliases)
+                {
+                    codeObjectsHash.Add(CaseSensitive ? alias : alias.ToLower(), arg);
+                }
             }
 
             // Find the command object first so that we can parse unnamed sequence command line styles.

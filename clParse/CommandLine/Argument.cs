@@ -17,6 +17,8 @@ namespace clParse.CommandLine
         public string HelpExample { get; set; }
         public string Summary { get; set; }
 
+        public IEnumerable<string> Aliases { get; set; }
+
         public IEnumerable<IArgument> RequiredArguments;
         public IEnumerable<IArgument> PermittedArguments;
         public IEnumerable<IArgument> ArgumentSequence;
@@ -25,7 +27,12 @@ namespace clParse.CommandLine
         {
             RequiredArguments = new List<IArgument>();
             PermittedArguments = new List<IArgument>();
-            ArgumentSequence = new List<IArgument>();
+            Aliases = new List<string>();
+            ArgumentSequence = null;
+
+            HelpDetail = $"{Name} Detailed help.";
+            HelpExample = $"{Name} Example help.";
+            Summary = $"{Name} Summary";
         }
     }
 }

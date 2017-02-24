@@ -15,8 +15,11 @@ namespace clParse.CommandLine
         public string Summary { get; set; }
         public bool Value { get; set; }
 
+        public IEnumerable<string> Aliases { get; set; }
+
         public SwitchArgument()
         {
+            Aliases = new List<string>();
             Value = false;
         }
     }

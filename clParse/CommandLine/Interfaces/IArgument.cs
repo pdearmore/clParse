@@ -12,5 +12,6 @@ namespace clParse.CommandLine.Interfaces
         string HelpDetail { get; set; }
         string HelpExample { get; set; }
         string Summary { get; set; }
+        IEnumerable<string> Aliases { get; set; }
     }
 }

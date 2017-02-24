@@ -203,12 +203,49 @@ namespace clParse.CommandLine.Tests
             var parser = new Parser(lst) { Delimiter = new char[] { ':', '=' } };
 
             // Start command not passed, but should be used anyway
+            var testArgs = new string[] { "start", "20", "5" };
+
+            var rtn = parser.Parse(testArgs);
+
+            Assert.AreEqual("5", ((NamedArgument)rtn["estimate"]).Value);
+            Assert.AreEqual("20", ((NamedArgument)rtn["id"]).Value);
+        }
+
+        [TestMethod()]
+        public void SequenceInterpretedCorrectyWithDefault_Test()
+        {
+            var idArg = new IdArgument() { Name = "id" };
+            var est = new EstimateArgument() { Name = "estimate" };
+            var startCmd = new StartCommand() { Name = "start", Default = true, ArgumentSequence = new List<IArgument>() { idArg, est } };
+            var lst = new List<IArgument>() { est, idArg, startCmd };
+            var parser = new Parser(lst) { Delimiter = new char[] { ':', '=' } };
+
+            // Start command not passed, but should be used anyway
             var testArgs = new string[] { "20", "5" };
 
             var rtn = parser.Parse(testArgs);
 
             Assert.AreEqual("5", ((NamedArgument)rtn["estimate"]).Value);
             Assert.AreEqual("20", ((NamedArgument)rtn["id"]).Value);
+        }
+
+
+        [TestMethod()]
+        public void SeeThatAliasesAreWorking_Test()
+        {
+            var idArg = new IdArgument() { Name = "id" };
+            var est = new EstimateArgument() { Name = "estimate", Aliases = new List<string>() { "est" } };
+            var startCmd = new StartCommand() { Name = "start", Aliases = new List<string>() { "st", "s"} };
+            var lst = new List<IArgument>() { est, idArg, startCmd };
+            var parser = new Parser(lst);
+
+            // Start command not passed, but should be used anyway
+            var testArgs = new string[] { "s", "/est:25" };
+
+            var rtn = parser.Parse(testArgs);
+
+            Assert.AreEqual("25", ((NamedArgument)rtn["estimate"]).Value);
+            Assert.AreEqual(startCmd, (rtn.CommandArgument));
         }
     }
 }
