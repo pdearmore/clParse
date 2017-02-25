@@ -236,15 +236,17 @@ namespace clParse.CommandLine.Tests
             var idArg = new IdArgument() { Name = "id" };
             var est = new EstimateArgument() { Name = "estimate", Aliases = new List<string>() { "est" } };
             var startCmd = new StartCommand() { Name = "start", Aliases = new List<string>() { "st", "s"} };
-            var lst = new List<IArgument>() { est, idArg, startCmd };
+            var dc = new CompletedSwitch() { Name = "Completed", Aliases = new List<string>() { "c", "comp" } };
+            var lst = new List<IArgument>() { est, idArg, startCmd, dc };
             var parser = new Parser(lst);
 
             // Start command not passed, but should be used anyway
-            var testArgs = new string[] { "s", "/est:25" };
+            var testArgs = new string[] { "s", "/est:25", "/comp" };
 
             var rtn = parser.Parse(testArgs);
 
             Assert.AreEqual("25", ((NamedArgument)rtn["estimate"]).Value);
+            Assert.AreEqual(true, ((SwitchArgument)rtn["completed"]).Value);
             Assert.AreEqual(startCmd, (rtn.CommandArgument));
         }
     }

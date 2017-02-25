@@ -22,13 +22,15 @@ namespace clParse
             // help
             // newitem /name:"New Item" /estimate:5 /complete
 
-            var helpCommand = new HelpCommand() { Name = "help" };
             var idArgument = new NamedArgument() { Name = "id" };
             var newItemCommand = new NewItemCommand() { Name = "newitem" };
             var nameArgument = new NamedArgument() { Name = "Name" };
+            var fullSwitch = new SwitchArgument() { Name = "full" };
+            var exampleSwitch = new SwitchArgument() { Name = "example" };
+            var helpCommand = new HelpCommand() { Name = "help", ArgumentSequence = new List<IArgument> { nameArgument } };
             var startCommand = new StartCommand() { Name = "start", RequiredArguments = new List<IArgument>() { idArgument } };
              
-            var lst = new List<IArgument>() { helpCommand, startCommand, idArgument, newItemCommand, nameArgument };
+            var lst = new List<IArgument>() { helpCommand, startCommand, idArgument, newItemCommand, nameArgument, fullSwitch, exampleSwitch };
 
             var parser = new Parser(lst);
 

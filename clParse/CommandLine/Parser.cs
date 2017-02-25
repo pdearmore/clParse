@@ -56,6 +56,7 @@ namespace clParse.CommandLine
             foreach (var arg in _args)
             {
                 codeObjectsHash.Add(CaseSensitive ? arg.Name : arg.Name.ToLower(), arg);
+                matchedArguments.AllArguments.Add(arg.Name, arg);
 
                 // Add a copy for each alias for this argument into the collection
                 foreach (var alias in arg.Aliases)

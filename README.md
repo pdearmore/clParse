@@ -12,6 +12,10 @@ you to loop until this happens (or until the Status is not equal to Executing).
 ## Usage
 Lorem ipsum blah blah.
 
+## Built-In Help
+You can build help text directly into your application by overriding the Summary, HelpDetail,
+and HelpExample properties of the arguments.  To see how these work in action, try running
+the clParse.Console application with the help command.
 
 ## Examples
 
@@ -49,6 +53,7 @@ Calls the HelpCommand object which displays some helpful information to the user
 ```
 In this case, this is an error for our demo console app, so we will get the amount of CommandArgument objects
 in the argument list, and if 0, show an error message that tells the user they can run it with the help command.
+Note that you can add "default arguments", however, in which case this would succeed.
 
 ```
 .\program.exe start
@@ -62,3 +67,4 @@ This should fail because IdArgument should be required for the StartCommand.
  CommandArguments, Switches, etc.
  - Even if the command line arguments are case insensitive, referring to the elements of the dictionary collection 
  are case sensitive.
+

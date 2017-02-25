@@ -9,6 +9,13 @@ namespace clParse.Timer
 {
     public class StartCommand : CommandArgument
     {
+        public StartCommand()
+        {
+            Summary = "Goes into a basic command mode.";
+            HelpDetail = "Shows an example of how to go into a command loop.";
+            HelpExample = "> <exefile> start will start the command loop until Q is pressed. ";
+        }
+
         public override void Command(ArgumentDictionary args)
         {
             Console.WriteLine("Press any key to test.  Press 'Q' to quit.");

@@ -13,6 +13,9 @@ namespace clParse.Timer
         public NewItemCommand() 
         {
             RequiredArguments = new List<IArgument> { new Argument() { Name = "name" } };
+            Summary = "Creates a new item.";
+            HelpDetail = "Use this command to create a new item.  This is the help detail.";
+            HelpExample = "> <exefile> newitem /name:\"This is a new item.\" should create a new item with specified name. \n";
         }
         public override void Command(ArgumentDictionary args)
         {
