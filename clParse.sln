@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{926861A6-A467-4ADE-BC1A-6C5B6BEE7EF7}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\..\Desktop\clParse.ico = ..\..\..\Desktop\clParse.ico
+		..\..\..\Desktop\icon64x64.png = ..\..\..\Desktop\icon64x64.png
 		README.md = README.md
 	EndProjectSection
 EndProject

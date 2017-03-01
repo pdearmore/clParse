@@ -1,18 +1,22 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>$id$</id>
+    <id>Dearmore.Console.clParse</id>
     <version>$version$</version>
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
     <licenseUrl>https://github.com/pdearmore/clParse/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/pdearmore/clParse</projectUrl>
-    <iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>
+    <iconUrl>https://github.com/pdearmore/clParse/blob/master/icon64x64.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
-    <copyright>Copyright 2017</copyright>
-    <tags>Tag1 Tag2</tags>
+    <releaseNotes>Initial release.</releaseNotes>
+    <language>en-US</language>
+    <copyright>Copyright 2017 Philip Dearmore, all rights reserved.</copyright>
+    <tags>args argument command command-line commandline console line parser parsing shell syntax</tags>
   </metadata>
+  <files>
+    <file src="bin\$configuration$\clParse.dll" target="lib\net45\" />
+  </files>  
 </package>
