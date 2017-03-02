@@ -8,7 +8,7 @@
     <owners>$author$</owners>
     <licenseUrl>https://github.com/pdearmore/clParse/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/pdearmore/clParse</projectUrl>
-    <iconUrl>https://github.com/pdearmore/clParse/blob/master/icon64x64.png</iconUrl>
+    <iconUrl>https://github.com/pdearmore/clParse/blob/master/icon64x64.png?raw=true</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>Initial release.</releaseNotes>

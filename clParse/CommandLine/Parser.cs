@@ -98,6 +98,8 @@ namespace clParse.CommandLine
                 }
             }
 
+            ReplaceAliasesWithFullNames(argumentsFromCommandLine);
+
             activeSequence = ((CommandArgument)matchedCommandArgs.First().Value).ArgumentSequence;
             if (matchedCommandArgs.Count == 1
                 && (activeSequence != null))
@@ -196,6 +198,26 @@ namespace clParse.CommandLine
 
             matchedArguments.UnknownArguments = unknownArguments.ToArray();
             return matchedArguments;
+        }
+
+        public void ReplaceAliasesWithFullNames(string[] args)
+        {
+            var _argsArray = _args.ToArray();
+
+            for (int x = 0; x < args.Length; x++)
+            {
+                for (int y = 0; y < _argsArray.Length; y++)
+                {
+                    for (int z = 0; z < _argsArray[y].Aliases.Count(); z++)
+                    {
+                        var _aliases = _argsArray[y].Aliases.ToArray();
+                        if (args[x] == _aliases[z])
+                        {
+                            args[x] = _argsArray[y].Name;
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -249,5 +249,26 @@ namespace clParse.CommandLine.Tests
             Assert.AreEqual(true, ((SwitchArgument)rtn["completed"]).Value);
             Assert.AreEqual(startCmd, (rtn.CommandArgument));
         }
+
+        [TestMethod()]
+        public void TestAliasesWithArgumentSequence_Test()
+        {
+            var idArg = new IdArgument() { Name = "id" };
+            var est = new EstimateArgument() { Name = "estimate", Aliases = new List<string>() { "est" } };
+            var startCmd = new StartCommand() { Name = "start", RequiredArguments = new List<IArgument>() { idArg }, Aliases = new string[] { "st" }, ArgumentSequence = new List<IArgument>() { idArg } };
+            var dc = new CompletedSwitch() { Name = "Completed", Aliases = new List<string>() { "c", "comp" } };
+            var lst = new List<IArgument>() { est, idArg, startCmd, dc };
+            var parser = new Parser(lst);
+
+            // Start command not passed, but should be used anyway
+            var testArgs = new string[] { "st", "5036" };
+
+            var rtn = parser.Parse(testArgs);
+
+            Assert.AreEqual("5036", ((NamedArgument)rtn["id"]).Value);
+        }
+
+
+
     }
 }
