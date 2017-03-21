@@ -49,6 +49,8 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Timer\CmdCommand.cs" />
+    <Compile Include="Timer\ConsoleMethods.cs" />
     <Compile Include="Timer\HelpCommand.cs" />
     <Compile Include="Timer\NewItemCommand.cs" />
     <Compile Include="Timer\StartCommand.cs" />

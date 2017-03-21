@@ -268,7 +268,24 @@ namespace clParse.CommandLine.Tests
             Assert.AreEqual("5036", ((NamedArgument)rtn["id"]).Value);
         }
 
+        [TestMethod()]
+        public void MultipleCommandsInArgumentSequenceShouldWork_Test()
+        {
+            var idArg = new IdArgument() { Name = "id" };
+            var nameArg = new NamedArgument() { Name = "name" };
+            var startCmd = new StartCommand() { Name = "start", RequiredArguments = new List<IArgument>() { idArg }, Aliases = new string[] { "st" }, ArgumentSequence = new List<IArgument>() { idArg } };
+            var hc = new Help() { Name="help", ArgumentSequence = new List<IArgument>() { nameArg } };
+            var lst = new List<IArgument>() { hc, startCmd, nameArg };
+            var parser = new Parser(lst);
 
+            // These args say "show me the help for the start command"
+            // So "start" should be picked up as a value of nameArg, not another command
+            var testArgs = new string[] { "help", "start" };
 
+            var rtn = parser.Parse(testArgs);
+
+            Assert.AreEqual(hc, rtn.CommandArgument);
+            Assert.AreEqual("start", ((IArgumentWithValue)rtn["name"]).Value);
+        }
     }
 }

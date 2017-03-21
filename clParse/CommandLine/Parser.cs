@@ -49,6 +49,7 @@ namespace clParse.CommandLine
             var codeObjectsHash = new Hashtable();
             var matchedArguments = new ArgumentDictionary();
             var unknownArguments = new List<string>();
+            var numberOfCommandArgs = 0;
             IEnumerable<IArgument> activeSequence;
 
             // Create a ArgumentDictionary of Arguments passed in via constructor so we can look them up
@@ -81,12 +82,12 @@ namespace clParse.CommandLine
                 {
                     var arg = (CommandArgument)codeObjectsHash[hashKey];
                     matchedArguments.Add(arg.Name, arg);
-                    matchedCommandArgs.Add(arg.Name, arg);
+                    numberOfCommandArgs++;
+                    if (matchedCommandArgs.Count < 1)
+                        matchedCommandArgs.Add(arg.Name, arg);
                 }
             }
-            if (matchedCommandArgs.Count > 1)
-                throw new ArgumentException("There cannot be more than one command.");
-            else if (matchedCommandArgs.Count < 1)
+            if (matchedCommandArgs.Count < 1)
             {
                 if (defaultCommand.Count() < 1)
                     throw new DefaultArgumentException("No commands supplied and no default specified.");
@@ -101,6 +102,10 @@ namespace clParse.CommandLine
             ReplaceAliasesWithFullNames(argumentsFromCommandLine);
 
             activeSequence = ((CommandArgument)matchedCommandArgs.First().Value).ArgumentSequence;
+
+            if (activeSequence == null && numberOfCommandArgs > 1)
+                throw new ArgumentException("There cannot be more than one command.");
+
             if (matchedCommandArgs.Count == 1
                 && (activeSequence != null))
             {

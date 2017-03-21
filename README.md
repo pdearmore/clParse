@@ -10,7 +10,15 @@ define its own response loop, and will have a Status property of Successful once
 you to loop until this happens (or until the Status is not equal to Executing).
 
 ## Usage
-Lorem ipsum blah blah.
+See the clParse.Console application to see how to use clParse.  In general, the command line argument
+philosophy of clParse is that you tell the app what you want to do by different Command objects.  So,
+say you have a timer, you might have a StartCommand.  Or a project management app, you might have a
+NewProjectCommand, a CompleteCommand, etc.  Then switches and "named arguments" can be used to modify
+the behavior of those commands.  So your NewProjectCommand might take a NameArgument that specifies
+the name of the projet.  That would look like this:
+```
+.\program.exe newitem /name:"New Item"
+```
 
 ## Built-In Help
 You can build help text directly into your application by overriding the Summary, HelpDetail,
